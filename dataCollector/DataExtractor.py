@@ -19,10 +19,6 @@ class DataExtractor:
         self.userIds = ["994457489709125632","1048372701788868608","1048374435370164230"]
 
     def create_tweet_listner(self):
-        consumer_key ="pUVDi94pxaNgc214PQrhpPUwa"
-        consumer_secret ="U8juTSRI2RazqQRIqlqp1qoWcaYVxH7bi2Ka3BKhdk5rPYcIVD"
-        access_token ="994457489709125632-7jsHa4jzK2lN7ZoEi6Muv7aeNIWPDmp"
-        access_token_secret ="FiJ0Budbxd3bvXi596vSK8Gc2ShmwoCeVTvtPDxLZTBo1"
         tweetListener = TweetsListner(self.consumer_key,self.consumer_secret,self.access_token,self.access_token_secret)
         #auth = OAuthHandler(consumer_key, consumer_secret)
         #auth.set_access_token(access_token, access_token_secret)
@@ -34,6 +30,13 @@ class DataExtractor:
         #tweet_mode = extended, so that we get a full tweets, useful if we have some advanced sue case. 
         twitter_stream = Stream(tweetListener.auth, tweetListener,tweet_mode='extended')
         twitter_stream.filter(follow=self.userIds)
+
+        #location filtering to analyse the trending #tags in a gvien regeion
+        '''
+        twitterStream.filter(locations=[
+        -130.78125, -31.3536369415, 140.625, 63.8600358954
+        ])
+        '''
 
    
 
