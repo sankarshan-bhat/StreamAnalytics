@@ -34,7 +34,7 @@ class TweetsListner(StreamListener):
 
 			#ToDo : Need to test the Kafka producer, some issue in the config so need to fix the kafka broker config first
 			#uncomment this
-			#Producer().produceMessage(self.json_data,"test")
+			Producer().produceMessage(self.json_data,"test")
 			return True
 		except BaseException as e:
 		    print("Error on_data: %s" % str(e))

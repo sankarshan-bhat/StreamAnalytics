@@ -1,0 +1,29 @@
+
+Floow the instrctions mentioned in the link. 
+
+Windows follow:
+	https://dzone.com/articles/running-apache-kafka-on-windows-os
+
+Mac:
+ https://www.tutorialkart.com/apache-kafka/install-apache-kafka-on-mac/
+
+But In general below are the step.
+
+1. Download Kakfka binary (Also make sure you have java installed). 
+
+2. Start Zookeeper
+	command: zkserver
+
+3. Start Kafka Server
+	command:  .\bin\windows\kafka-server-start.bat .\config\server.properties
+
+4. Create a topic 
+	command: kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+	Note: for now I kept topci name as test, we can change it later, also partitions.
+
+4. Start consumer via console
+	command: kafka-console-consumer.bat --bootstrap-server localhost:9092 --from-beginning --topic topic_name 
+	Note: This step is required if you want to start the consumer via command line. My Python implementation
+	has consumer as well. so Just need to add the respective algorithm over there.
+
+
