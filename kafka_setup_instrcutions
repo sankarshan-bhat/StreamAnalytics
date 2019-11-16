@@ -14,12 +14,23 @@ But In general below are the step.
 2. Start Zookeeper
 	command: zkserver
 
+	In Mac
+	bin/zookeeper-server-start.sh config/zookeeper.properties
+
+
 3. Start Kafka Server
 	command:  .\bin\windows\kafka-server-start.bat .\config\server.properties
+
+	in Mac
+	$ bin/kafka-server-start.sh config/server.properties
+
 
 4. Create a topic 
 	command: kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
 	Note: for now I kept topci name as test, we can change it later, also partitions.
+
+	 In Mac:
+	./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic 1
 
 4. Start consumer via console
 	command: kafka-console-consumer.bat --bootstrap-server localhost:9092 --from-beginning --topic topic_name 
