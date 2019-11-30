@@ -29,14 +29,14 @@ class DataExtractor:
 
         #tweet_mode = extended, so that we get a full tweets, useful if we have some advanced sue case. 
         twitter_stream = Stream(tweetListener.auth, tweetListener,tweet_mode='extended')
-        twitter_stream.filter(follow=self.userIds)
+        #twitter_stream.filter(follow=self.userIds)
 
         #location filtering to analyse the trending #tags in a gvien regeion
-        '''
-        twitterStream.filter(locations=[
+        
+        twitter_stream.filter(locations=[
         -130.78125, -31.3536369415, 140.625, 63.8600358954
         ])
-        '''
+        
 
    
 
