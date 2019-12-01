@@ -1,17 +1,15 @@
 from functools import cmp_to_key
-import math
+
 
 class manku_motwani_algo:
 
-    def __init__(self,errorLimit,maxFrequentItems):
+    def __init__(self,errorLimit):
         self.bucketSize = int((1/errorLimit))
         self.errorLimit = errorLimit
         self.currentBucket = 0
         self.buckets = {}
-        self.maxFrequentItems = maxFrequentItems
         self.count = 0
         self.toBeRemoved = []
-
 
     def delete(self):
         self.toBeRemoved.clear()
@@ -34,10 +32,10 @@ class manku_motwani_algo:
         self.buckets[input_data] = (objectCounter+1, delta)
         self.delete()
 
-    def truncate(self, tempList):
+    def truncate(self, tempList,maxFrequentItems):
         sorted(tempList, key=cmp_to_key(self.compare))
-        tempListReturn = [None]*min(self.maxFrequentItems,len(tempList))
-        for i in range(0,min(self.maxFrequentItems,len(tempList))):
+        tempListReturn = [None]*min(maxFrequentItems,len(tempList))
+        for i in range(0,min(maxFrequentItems,len(tempList))):
             tempListReturn[i] = tempList[i]
         return tempListReturn
 
@@ -51,7 +49,7 @@ class manku_motwani_algo:
             return -1
         return 0
 
-    def get(self):
+    def get(self,maxFrequentItems):
         count = 0
         tempList = []
         for key in self.buckets.keys():
@@ -59,9 +57,8 @@ class manku_motwani_algo:
             (objectCounter,delta) = self.buckets[key]
             tempList.append((key,objectCounter))
             if(count%1000==0):
-                self.truncate(tempList)
-
-        return self.truncate(tempList)
+                self.truncate(tempList,maxFrequentItems)
+        return self.truncate(tempList,maxFrequentItems)
 
     def get_with_support(self,support):
        count = 0

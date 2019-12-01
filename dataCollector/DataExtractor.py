@@ -32,7 +32,7 @@ class DataExtractor:
         #twitter_stream.filter(follow=self.userIds)
         #location filtering to analyse the trending #tags in a gvien regeion
 
-        twitter_stream.filter(locations=[ -130.78125, -31.3536369415, 140.625, 63.8600358954])
+        twitter_stream.filter(locations=[-125.0011,24.9493,-66.9326,49.5904])
 
 
    

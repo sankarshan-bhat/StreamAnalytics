@@ -3,7 +3,7 @@ import random
 from StreamAnalytics.manku_motwani_lossy_counting.manku_motwani_algo import manku_motwani_algo
 
 def testMankuMotwani():
-    manku_motwani = manku_motwani_algo(0.01,5)
+    manku_motwani = manku_motwani_algo(0.01)
     save_count=[0]*26
     save_count_capital = [0]*26
     for i in range(0,50000):
@@ -22,7 +22,7 @@ def testMankuMotwani():
     for i in range(0,26):
         print(chr(i+65),":",save_count_capital[i])
 
-    print(manku_motwani.get())
+    print(manku_motwani.get(5))
 
     print("\n With Support")
     print(manku_motwani.get_with_support(.03))
