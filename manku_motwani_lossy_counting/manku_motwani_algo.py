@@ -69,7 +69,7 @@ class manku_motwani_algo:
        for key in self.buckets.keys():
            count = count + 1
            (objectCounter, delta) = self.buckets[key]
-           if objectCounter>(support-self.errorLimit)*self.count*0.01:
+           if objectCounter>(support-self.errorLimit)*self.count:
                tempList.append((key, objectCounter))
        return tempList
 

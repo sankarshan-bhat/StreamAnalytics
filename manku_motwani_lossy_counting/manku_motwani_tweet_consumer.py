@@ -13,7 +13,7 @@ class manku_motwani_tweet_consumer:
 
   def consumerMessage(self):
     print("Inside Consumer")
-    consumer = KafkaConsumer('HashTags',bootstrap_servers=['localhost:9092'])
+    consumer = KafkaConsumer('UserMention',bootstrap_servers=['localhost:9092'])
     print(manku_motwani_tweet_consumer.manku_motwani)
     for message in consumer:
       r_msg = str(message.value.decode("utf-8"))
