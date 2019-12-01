@@ -43,11 +43,11 @@ class TweetsListner(StreamListener):
 			#uncomment this
 			for hash_tag in list_of_hashTags:
 				print("HashTag: ",hash_tag["text"])
-				self.kafka_producer.produceMessage(hash_tag["text"], "HashTags")
+				self.kafka_producer.produceMessage(hash_tag["text"].lower(), "HashTags")
 
 			for user_mention in list_of_user_mentions:
 				print("User_Mention: ", user_mention["screen_name"])
-				self.kafka_producer.produceMessage(user_mention["screen_name"],"UserMention")
+				self.kafka_producer.produceMessage(user_mention["screen_name"].lower(),"UserMention")
 
 			return True
 		except BaseException as e:
