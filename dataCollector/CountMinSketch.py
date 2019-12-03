@@ -206,6 +206,9 @@ class CountMinSketch(object):
             else:
                 tmp = self.__fnv_1a(key)
             res.append(tmp)
+        # print("res = \n")
+        # print(res)
+        # print("res complete")
         return res
 
     def __fnv_1a(self, key):
@@ -330,3 +333,15 @@ class StreamThreshold(CountMinSketch):
     def meets_threshold(self):
         ''' dictionary of those that meet the required threshold '''
         return self.__meets_threshold
+
+# o1 = HeavyHitters(width=5, depth=5, num_hitters=1)
+# res= o1.add_alt("hello", o1.hashes("hello",5),1)
+# print(res)
+# res= o1.add_alt("hi", o1.hashes("hi",5),1)
+# print(res)
+# res= o1.add_alt("hile", o1.hashes("hile",5),1)
+# print(res)
+# res= o1.add_alt("hello", o1.hashes("hello",5),1)
+# print(res)
+# print(f"\nElements added:{o1.elements_added}")
+# print("Heavy hitters\n", o1.heavyhitters)
