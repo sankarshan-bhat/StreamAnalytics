@@ -1,10 +1,10 @@
 from functools import cmp_to_key
-
+import math
 
 class manku_motwani_algo:
 
     def __init__(self,errorLimit):
-        self.bucketSize = int((1/errorLimit))
+        self.bucketSize = math.ceil((1/errorLimit))
         self.errorLimit = errorLimit
         self.currentBucket = 0
         self.buckets = {}
@@ -23,9 +23,9 @@ class manku_motwani_algo:
 
     def add (self, input_data):
         self.count = self.count+1;
-        self.currentBucket = int(self.count/self.bucketSize + 1)
+        self.currentBucket = math.ceil(self.count/self.bucketSize)
         if input_data not in self.buckets:
-            self.currentBucket = int(self.count/self.bucketSize)
+            self.currentBucket = math.ceil(self.count/self.bucketSize)
             bucket_object = (0,self.currentBucket-1)
             self.buckets[input_data] = bucket_object
         (objectCounter, delta) = self.buckets[input_data]
