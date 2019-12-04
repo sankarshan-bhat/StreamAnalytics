@@ -1,10 +1,11 @@
+import operator
 from functools import cmp_to_key
 import math
 
 class manku_motwani_algo:
 
     def __init__(self,errorLimit):
-        self.bucketSize = math.ceil((1/errorLimit))
+        self.bucketSize = math.ceil((1/(errorLimit)))
         self.errorLimit = errorLimit
         self.currentBucket = 0
         self.buckets = {}
@@ -30,7 +31,8 @@ class manku_motwani_algo:
             self.buckets[input_data] = bucket_object
         (objectCounter, delta) = self.buckets[input_data]
         self.buckets[input_data] = (objectCounter+1, delta)
-        self.delete()
+        if(self.count%self.bucketSize==0):
+            self.delete()
 
     def truncate(self, tempList,maxFrequentItems):
         sorted(tempList, key=cmp_to_key(self.compare))
@@ -62,12 +64,13 @@ class manku_motwani_algo:
 
     def get_with_support(self,support):
        count = 0
-       tempList = []
+       tempList = {}
        for key in self.buckets.keys():
            count = count + 1
            (objectCounter, delta) = self.buckets[key]
            if objectCounter>(support-self.errorLimit)*self.count:
-               tempList.append((key, objectCounter))
+               tempList[key] = objectCounter
+       tempList = sorted(tempList.items(),key=operator.itemgetter(1),reverse=True)
        return tempList
 
 

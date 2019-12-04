@@ -49,40 +49,50 @@ class manku_motwani_tweet_consumer:
 
 
 
-@tl.job(interval=timedelta(minutes=10))
+@tl.job(interval=timedelta(minutes=2))
 @profile
 def ourCustomaryFunction():
     getTopK()
+    getWithSupport()
     gc.collect()
-@profile
+
+#@profile
 def getTopK():
     manku_motwani_tweet_consumer_object = manku_motwani_tweet_consumer()
-    manku_motwani_User_Mentions = manku_motwani_algo(0.000001)
-    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_User_Mentions,topic_name="UserMention",minutes=60)
+    manku_motwani_User_Mentions = manku_motwani_algo(0.001)
+    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_User_Mentions,topic_name="UserMention",minutes=1440)
     #print(manku_motwani_User_Mentions)
-    print("Result after round for UserMentions: ", manku_motwani_User_Mentions.get(100))
-    manku_motwani_HashTags = manku_motwani_algo(0.000001)
-    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_HashTags, topic_name="HashTags", minutes=60)
+    print("Result after round for UserMentions: ", manku_motwani_User_Mentions.get(10))
+    manku_motwani_HashTags = manku_motwani_algo(0.0005)
+    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_HashTags, topic_name="HashTags", minutes=10)
     #print(manku_motwani_HashTags)
-    print("Result after round for Hashtags: ", manku_motwani_HashTags.get(100))
+    print("Result after round for Hashtags: ", manku_motwani_HashTags.get(10))
     print()
 
-# @tl.job(interval=timedelta(minutes=2))
-# def getWithSupport():
-#     print(manku_motwani_tweet_consumer.manku_motwani)
-#     print("Result after round for UserMentions: ", manku_motwani_tweet_consumer.manku_motwani.get_with_support("UserMentions", 5,0.02))
-#     print("Result after round for Hashtags: ",manku_motwani_tweet_consumer.manku_motwani.get_with_support("HashTags",5,0.02))
-#     print()
+#@profile
+def getWithSupport():
+    print("For Support ")
+    manku_motwani_tweet_consumer_object = manku_motwani_tweet_consumer()
+    #manku_motwani_User_Mentions = manku_motwani_algo(0.0001)
+    #manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_User_Mentions, topic_name="UserMention",
+    #                                               minutes=10)
+    # print(manku_motwani_User_Mentions)
+    #print("Result after round for UserMentions: ", manku_motwani_User_Mentions.get_with_support(0.005))
+    start_time = int(datetime.datetime.now().timestamp()*1000)
+    manku_motwani_HashTags = manku_motwani_algo(0.001)
+    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_HashTags, topic_name="HashTags",
+                                                   minutes=180)
+    end_time = int(datetime.datetime.now().timestamp()*1000)
+    # print(manku_motwani_HashTags)
+    print("Result after round for Hashtags: ", manku_motwani_HashTags.get_with_support(0.005))
+    print("Time Taken: ",(end_time-start_time))
+    print()
 
 
-# def threaded_function():
-#     manku_motwani_tweet_consumer().consumerMessage()
-#
+
 if __name__ == '__main__':
- tl.start(block=True)
-# #
-# #
-# # thread = Thread(target=threaded_function)
-# # thread.start()
-# # tl.start(block=True)
+ #tl.start(block=True)
+ #getWithSupport()
+ #getTopK()
+ getWithSupport()
 
