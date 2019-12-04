@@ -1,13 +1,14 @@
-from kafka import KafkaConsumer
-from manku_motwani_algo import *
-from threading import Thread
+
+from memory_profiler import profile
 import json
+import gc
 from timeloop import Timeloop
-from StreamAnalytics.manku_motwani_lossy_counting.manku_motwani_algo import manku_motwani_algo
 from datetime import timedelta
 from kafka import KafkaConsumer
 from kafka.structs import TopicPartition, OffsetAndTimestamp
 import datetime
+print(__name__)
+from manku_motwani_algo import *
 
 tl = Timeloop()
 
@@ -35,6 +36,8 @@ class manku_motwani_tweet_consumer:
         self.consumer.assign([self.tp])
         self.consumer.seek(self.tp, int(self.old_offsets[self.tp].offset))
         print("StartOffset: ",int(self.old_offsets[self.tp].offset)," EndOffset: ", int(self.cur_offset[self.tp]))
+        number_of_msg_in_stream = int(self.cur_offset[self.tp]) - int(self.old_offsets[self.tp].offset)
+        print("Count of Messages: ",number_of_msg_in_stream)
         for message in self.consumer:
             if int(message.offset) >= int(self.cur_offset[self.tp]):
                 break
@@ -43,17 +46,25 @@ class manku_motwani_tweet_consumer:
             manku_motwani.add(tweet_text)
         return None
 
-@tl.job(interval=timedelta(minutes=5))
+
+
+
+@tl.job(interval=timedelta(minutes=10))
+@profile
+def ourCustomaryFunction():
+    getTopK()
+    gc.collect()
+@profile
 def getTopK():
     manku_motwani_tweet_consumer_object = manku_motwani_tweet_consumer()
-    manku_motwani_User_Mentions = manku_motwani_algo(0.01)
-    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_User_Mentions,topic_name="UserMention",minutes=5)
+    manku_motwani_User_Mentions = manku_motwani_algo(0.000001)
+    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_User_Mentions,topic_name="UserMention",minutes=60)
     #print(manku_motwani_User_Mentions)
-    print("Result after round for UserMentions: ", manku_motwani_User_Mentions.get(10))
-    manku_motwani_HashTags = manku_motwani_algo(0.01)
-    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_HashTags, topic_name="HashTags", minutes=5)
+    print("Result after round for UserMentions: ", manku_motwani_User_Mentions.get(100))
+    manku_motwani_HashTags = manku_motwani_algo(0.000001)
+    manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_HashTags, topic_name="HashTags", minutes=60)
     #print(manku_motwani_HashTags)
-    print("Result after round for Hashtags: ", manku_motwani_HashTags.get(10))
+    print("Result after round for Hashtags: ", manku_motwani_HashTags.get(100))
     print()
 
 # @tl.job(interval=timedelta(minutes=2))
