@@ -10,19 +10,17 @@ class Producer:
 			print('Exception while connecting Kafka')
 			
 	def produceMessage(self,msg,topic):
-		print ("producing",msg)
+		#print ("producing",msg)
 		self.producer.send(topic, msg).add_callback(self.on_send_success).add_errback(self.on_send_error)
 		self.producer.flush()
 
 
 
 	def on_send_success(self,record_metadata):
-		print(record_metadata.topic)
-		print(record_metadata.partition)
-		print(record_metadata.offset)
+		print("Data Sent. Topic: ",record_metadata.topic, "partition: ",record_metadata.partition, "Offset: ",record_metadata.offset)
 
 	def on_send_error(self,excp):
-		print('I am an errback', exc_info=excp)
+		print('ERROR: ', exc_info=excp)
 
 
 
