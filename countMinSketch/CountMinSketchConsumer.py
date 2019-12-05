@@ -10,18 +10,18 @@ from memory_profiler import profile
 
 class CountMinSketchConsumer:
 
-    @profile
+    #@profile
     def consumerMessage(self, use_case):
-        print("inside consumer")
+        #print("inside consumer")
         self.consumer = KafkaConsumer(bootstrap_servers=['localhost:9092'])
         if use_case == "HashTags":
             # get current offset and store it and process unitl offset reaches this value
-            self.tp = TopicPartition("test2", 0)
+            self.tp = TopicPartition("HashTags", 0)
             self.cur_offset = self.consumer.end_offsets([self.tp])
 
             # timestamp corresponding to current time - 24 hours
             current_time = datetime.datetime.now()
-            old_time = current_time - datetime.timedelta(minutes=20)
+            old_time = current_time - datetime.timedelta(minutes=30)
             old_epoch_ts = int(old_time.timestamp() * 1000)  # in miliseconds
 
             # get the offset corresponding to old timestamp
@@ -37,19 +37,19 @@ class CountMinSketchConsumer:
 
             # create instance of misra-gries algo
             self.count_min_sketch = HeavyHitters(
-                width=100, depth=100, num_hitters=10)
+                width=100, depth=100, num_hitters=20)
 
         elif use_case == "UserMention":
 
             # get current offset
-            self.tp = TopicPartition("test3", 0)
+            self.tp = TopicPartition("UserMention", 0)
             self.cur_offset = self.consumer.end_offsets([self.tp])
-            print("cur offset", self.cur_offset[self.tp])
+            #print("cur offset", self.cur_offset[self.tp])
 
             # timestamp corresponds to cur time - 24 hours
             cur_time = int(round(time.time() * 1000))
             current_time = datetime.datetime.now()
-            old_time = current_time - datetime.timedelta(minutes=20)
+            old_time = current_time - datetime.timedelta(minutes=30)
             old_epoch_ts = int(old_time.timestamp() * 1000)  # in miliseconds
 
             # get the offset corresponds to old timestamp
@@ -65,7 +65,7 @@ class CountMinSketchConsumer:
 
             # create instance of misra-gries algo
             self.count_min_sketch = HeavyHitters(
-                width=100, depth=100, num_hitters=10)
+                width=100, depth=100, num_hitters=20)
 
         for message in self.consumer:
             '''
@@ -76,7 +76,7 @@ class CountMinSketchConsumer:
 
             r_msg = str(message.value.decode("utf-8"))
             tweet_text = json.loads(r_msg)
-            print("Tweet text: ", tweet_text)
+            #print("Tweet text: ", tweet_text)
             # if tweet_text['tweet_data'] is not None and 'entities' in tweet_text['tweet_data'] and 'hashtags' in tweet_text['tweet_data']['entities']:
             #     if use_case == "HashTags":
             #         eois = tweet_text['tweet_data']['entities']['hashtags']
@@ -102,4 +102,7 @@ if __name__ == '__main__':
     #     sys.exit(1)
     # use_case = sys.argv[1]
     # CountMinSketchConsumer().consumerMessage(use_case)
+    start_time = int(datetime.datetime.now().timestamp()*1000)
     CountMinSketchConsumer().consumerMessage("HashTags")
+    end_time = int(datetime.datetime.now().timestamp()*1000)
+    print("Time Taken",(end_time-start_time))
