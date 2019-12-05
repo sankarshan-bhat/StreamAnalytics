@@ -37,7 +37,7 @@ class CountMinSketchConsumer:
 
             # create instance of misra-gries algo
             self.count_min_sketch = HeavyHitters(
-                width=100, depth=100, num_hitters=20)
+                width=10, depth=1000, num_hitters=20)
 
         elif use_case == "UserMention":
 
@@ -65,7 +65,7 @@ class CountMinSketchConsumer:
 
             # create instance of misra-gries algo
             self.count_min_sketch = HeavyHitters(
-                width=100, depth=100, num_hitters=20)
+                width=10, depth=1000, num_hitters=20)
 
         for message in self.consumer:
             '''
