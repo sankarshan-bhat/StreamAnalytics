@@ -21,12 +21,14 @@ class CountMinSketchConsumer:
 
             # timestamp corresponding to current time - 24 hours
             current_time = datetime.datetime.now()
-            old_time = current_time - datetime.timedelta(minutes=30)
+            old_time = current_time - datetime.timedelta(minutes=60)
             old_epoch_ts = int(old_time.timestamp() * 1000)  # in miliseconds
 
             # get the offset corresponding to old timestamp
             self.old_offsets = self.consumer.offsets_for_times(
                 {self.tp: old_epoch_ts})
+
+            print("offset diff(no of messages)",self.cur_offset[self.tp]-self.old_offsets[self.tp].offset)
 
             # reset the consumer offset
             self.consumer.assign([self.tp])
@@ -37,7 +39,7 @@ class CountMinSketchConsumer:
 
             # create instance of misra-gries algo
             self.count_min_sketch = HeavyHitters(
-                width=10, depth=1000, num_hitters=20)
+                width=1000, depth=10, num_hitters=20)
 
         elif use_case == "UserMention":
 
@@ -49,7 +51,7 @@ class CountMinSketchConsumer:
             # timestamp corresponds to cur time - 24 hours
             cur_time = int(round(time.time() * 1000))
             current_time = datetime.datetime.now()
-            old_time = current_time - datetime.timedelta(minutes=30)
+            old_time = current_time - datetime.timedelta(minutes=60)
             old_epoch_ts = int(old_time.timestamp() * 1000)  # in miliseconds
 
             # get the offset corresponds to old timestamp
@@ -65,7 +67,7 @@ class CountMinSketchConsumer:
 
             # create instance of misra-gries algo
             self.count_min_sketch = HeavyHitters(
-                width=10, depth=1000, num_hitters=20)
+                width=1000, depth=10, num_hitters=20)
 
         for message in self.consumer:
             '''
@@ -89,7 +91,7 @@ class CountMinSketchConsumer:
             #             else:
             #                 eoi = eoi['name']
             #             print(eoi, "\n")
-            self.count_min_sketch.add_alt(tweet_text, self.count_min_sketch.hashes(tweet_text, 100), 1)
+            self.count_min_sketch.add_alt(tweet_text, self.count_min_sketch.hashes(tweet_text, 10), 1)
 
         msg_frequent_item = self.count_min_sketch.heavyhitters
         msg_frequent_item = sorted(msg_frequent_item.items(), key=operator.itemgetter(1), reverse=True)
