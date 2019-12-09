@@ -21,7 +21,7 @@ class CountMinSketchConsumer:
 
             # timestamp corresponding to current time - 24 hours
             current_time = datetime.datetime.now()
-            old_time = current_time - datetime.timedelta(minutes=60)
+            old_time = current_time - datetime.timedelta(hours=24)
             old_epoch_ts = int(old_time.timestamp() * 1000)  # in miliseconds
 
             # get the offset corresponding to old timestamp
@@ -51,7 +51,7 @@ class CountMinSketchConsumer:
             # timestamp corresponds to cur time - 24 hours
             cur_time = int(round(time.time() * 1000))
             current_time = datetime.datetime.now()
-            old_time = current_time - datetime.timedelta(minutes=60)
+            old_time = current_time - datetime.timedelta(hours=8)
             old_epoch_ts = int(old_time.timestamp() * 1000)  # in miliseconds
 
             # get the offset corresponds to old timestamp

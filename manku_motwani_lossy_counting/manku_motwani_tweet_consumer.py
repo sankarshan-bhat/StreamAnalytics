@@ -80,6 +80,7 @@ def getWithSupport():
     #print("Result after round for UserMentions: ", manku_motwani_User_Mentions.get_with_support(0.005))
     start_time = int(datetime.datetime.now().timestamp()*1000)
     manku_motwani_HashTags = manku_motwani_algo(0.001)
+
     manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_HashTags, topic_name="UserMention",
                                                    minutes=120)
     # print(manku_motwani_HashTags)
