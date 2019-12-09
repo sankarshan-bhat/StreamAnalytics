@@ -56,10 +56,30 @@ class TweetsConsumer:
       self.cur_offset = self.consumer.end_offsets([self.tp])
       print ("cur offset",self.cur_offset[self.tp])
 
+      # #timestamp corresponds to cur time - 24 hours
+      # cur_time = int(round(time.time() * 1000))
+      # current_time = datetime.datetime.now() 
+      # old_time = current_time - datetime.timedelta(minutes=15)
+      # old_epoch_ts = int(old_time.timestamp() * 1000)# in miliseconds
+     
+      # #get the offset corresponds to old timestamp
+      # self.old_offsets = self.consumer.offsets_for_times({self.tp: old_epoch_ts})
+
+      # #reset the consumer offset
+      # self.consumer.assign([self.tp])
+      # self.consumer.seek(self.tp, int(self.old_offsets[self.tp].offset))
+
+      # print ("reset offset")
+      # print (self.old_offsets[self.tp].offset)
+
+      # #create instance of misra-gries algo
+      # number_of_msg_in_stream =  int(self.cur_offset[self.tp])- int(self.old_offsets[self.tp].offset)
+      # self.misra_gries = MisraGries(number_of_msg_in_stream,desired_freq)
+
       #timestamp corresponds to cur time - 24 hours
       cur_time = int(round(time.time() * 1000))
       current_time = datetime.datetime.now() 
-      old_time = current_time - datetime.timedelta(minutes=15)
+      old_time = current_time - datetime.timedelta(hours=1)
       old_epoch_ts = int(old_time.timestamp() * 1000)# in miliseconds
      
       #get the offset corresponds to old timestamp
@@ -72,8 +92,13 @@ class TweetsConsumer:
       print ("reset offset")
       print (self.old_offsets[self.tp].offset)
 
+      print("offset diff(no of messages",self.cur_offset[self.tp]-self.old_offsets[self.tp].offset)
+      print ("----------------")
       #create instance of misra-gries algo
-      number_of_msg_in_stream =  int(self.cur_offset[self.tp])- int(self.old_offsets[self.tp].offset)
+      number_of_msg_in_stream =  int(self.cur_offset[self.tp])-int(self.old_offsets[self.tp].offset)
+
+      desired_freq = int(int(self.cur_offset[self.tp]-self.old_offsets[self.tp].offset)*float(support)/100)
+      
       self.misra_gries = MisraGries(number_of_msg_in_stream,desired_freq)
 
     
