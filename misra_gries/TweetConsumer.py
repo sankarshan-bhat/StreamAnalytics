@@ -11,7 +11,7 @@ import operator
 class TweetsConsumer:
 
   # @profile
-  def consumerMessage(self,use_case,desired_freq):
+  def consumerMessage(self,use_case,support):
     print ("inside consumer")
     time1 = int (datetime.datetime.now().timestamp()*1000)
     self.consumer = KafkaConsumer(bootstrap_servers=['localhost:9092'])
@@ -26,7 +26,7 @@ class TweetsConsumer:
       #timestamp corresponds to cur time - 24 hours
       cur_time = int(round(time.time() * 1000))
       current_time = datetime.datetime.now() 
-      old_time = current_time - datetime.timedelta(minutes=180)
+      old_time = current_time - datetime.timedelta(hours=24)
       old_epoch_ts = int(old_time.timestamp() * 1000)# in miliseconds
      
       #get the offset corresponds to old timestamp
@@ -43,6 +43,9 @@ class TweetsConsumer:
       print ("----------------")
       #create instance of misra-gries algo
       number_of_msg_in_stream =  int(self.cur_offset[self.tp])-int(self.old_offsets[self.tp].offset)
+
+      desired_freq = int(int(self.cur_offset[self.tp]-self.old_offsets[self.tp].offset)*float(support)/100)
+      
       self.misra_gries = MisraGries(number_of_msg_in_stream,desired_freq)
 
 
@@ -132,6 +135,6 @@ if __name__ == '__main__':
   if len(sys.argv) < 3:
     sys.exit(1)
   use_case = sys.argv[1]
-  desired_freq = int(sys.argv[2])
+  support = sys.argv[2]
 
-  TweetsConsumer().consumerMessage(use_case,desired_freq)
+  TweetsConsumer().consumerMessage(use_case,support)

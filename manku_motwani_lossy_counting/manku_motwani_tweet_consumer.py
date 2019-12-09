@@ -81,7 +81,7 @@ def getWithSupport():
     start_time = int(datetime.datetime.now().timestamp()*1000)
     manku_motwani_HashTags = manku_motwani_algo(0.001)
     manku_motwani_tweet_consumer_object.setupTable(manku_motwani=manku_motwani_HashTags, topic_name="HashTags",
-                                                   minutes=180)
+                                                   minutes=1440)
     end_time = int(datetime.datetime.now().timestamp()*1000)
     # print(manku_motwani_HashTags)
     print("Result after round for Hashtags: ", manku_motwani_HashTags.get_with_support(0.005))
